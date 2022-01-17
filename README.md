@@ -32,5 +32,6 @@ P(S) = { {}, {a}, {b}, {c}, {a, b}, {a, c}, {b, c}, {a, b, c} }
 
 Think of it as all the different ways we can select the items (the order of the items doesn't matter), including selecting none, or all.
 
-This implemention also records the ordering where it can which is useful for api testing. i.e. We often see `company.xyz/api/v2/doctor/ward` but rarely see `company.xyz/doctor/ward/api/v2` so when we fuzz for `v2` at the end it's a wasted request (or thousand!)
+This implemention *does* record the ordering where it can which is useful for api testing. i.e. We often see `company.xyz/api/v2/doctor/ward` but rarely see `company.xyz/doctor/ward/api/v2` so when we fuzz for `v2` at the end it's a wasted request (or thousand!)
 
+The benefit of this approach is mainly time saving & reduced noise on the target server. Also, adding the logical ordering means that the few tests we complete (versus recursive brute-forcing) have a higher success rate than if it were randomised, although this is more notable for longer URL's than shorter one.
