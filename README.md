@@ -1,6 +1,6 @@
 # punfurl
 
-Takes URL's on `stdin` and jumbles the paths using a powerset technique and recombines them to the domain on `stdout`.
+Takes URL's on `stdin` and jumbles the paths using a powerset technique and recombines with the domain on `stdout`.
 
 ## Example
 ```
