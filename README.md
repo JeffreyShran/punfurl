@@ -4,16 +4,46 @@ Takes URL's on `stdin` and jumbles the paths using a powerset technique and reco
 
 ## Example
 ```
-root@workstation:~/tools/punfurl# echo "https://support.google.com/google-ads/answer/2472708?hl=en-GB"  | go run ~/tools/punfurl/main.go
-https://support.google.com/google-ads
-https://support.google.com/answer
-https://support.google.com/google-ads/answer
-https://support.google.com/2472708
-https://support.google.com/google-ads/2472708
-https://support.google.com/answer/2472708
-https://support.google.com/google-ads/answer/2472708
-https://support.google.com
-https://support.google.com/google-ads/answer/2472708?hl=en-GB
+~/dump > echo "https://jeff.com/api/v1/datasources/iModels/8d73d54f/extraction/run" | go run ~/tools/punfurl/main.go                                                             https://jeff.com/api
+https://jeff.com/v1
+https://jeff.com/api/v1
+https://jeff.com/datasources
+https://jeff.com/api/datasources
+https://jeff.com/v1/datasources
+https://jeff.com/api/v1/datasources
+https://jeff.com/iModels
+https://jeff.com/api/iModels
+https://jeff.com/v1/iModels
+https://jeff.com/api/v1/iModels
+https://jeff.com/datasources/iModels
+https://jeff.com/api/datasources/iModels
+https://jeff.com/v1/datasources/iModels
+https://jeff.com/api/v1/datasources/iModels
+https://jeff.com/8d73d54f
+https://jeff.com/api/8d73d54f
+https://jeff.com/v1/8d73d54f
+https://jeff.com/api/v1/8d73d54f
+https://jeff.com/datasources/8d73d54f
+https://jeff.com/api/datasources/8d73d54f
+https://jeff.com/v1/datasources/8d73d54f
+https://jeff.com/api/v1/datasources/8d73d54f
+https://jeff.com/iModels/8d73d54f
+https://jeff.com/api/iModels/8d73d54f
+https://jeff.com/v1/iModels/8d73d54f
+https://jeff.com/api/v1/iModels/8d73d54f
+https://jeff.com/datasources/iModels/8d73d54f
+https://jeff.com/api/datasources/iModels/8d73d54f
+https://jeff.com/v1/datasources/iModels/8d73d54f
+https://jeff.com/api/v1/datasources/iModels/8d73d54f
+https://jeff.com/extraction
+https://jeff.com/api/extraction
+https://jeff.com/v1/extraction
+https://jeff.com/api/v1/extraction
+https://jeff.com/datasources/extraction
+https://jeff.com/api/datasources/extraction
+https://jeff.com/v1/datasources/extraction
+https://jeff.com/api/v1/datasources/extraction
+https://jeff.com/iModels/extraction
 ```
 
 To fuzz directories you typically need to initially create a worldist then iterate through each word in that list recursively. This takes time and generates lots of requests on the server when you test for them.
@@ -35,3 +65,5 @@ Think of it as all the different ways we can select the items (the order of the 
 This implemention *does* record the ordering where it can which is useful for api testing. i.e. We often see `company.xyz/api/v2/doctor/ward` but rarely see `company.xyz/doctor/ward/api/v2` so when we fuzz for `v2` at the end it's a wasted request (or thousand!)
 
 The benefit of this approach is mainly time saving & reduced noise on the target server. Also, adding the logical ordering means that the few tests we complete (versus recursive brute-forcing) have a higher success rate than if it were randomised, although this is more notable for longer URL's than shorter one.
+
+It's not meant to be thorough, it's intended use is for time saving when mass scanning and to be suitable to be pipelined with other open source tooling. On a 6 part path you'd see a 91% reduction of generated URL's using my tool versus bruteforcing with something like FFUF. (64 vs 720)
