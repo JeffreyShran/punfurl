@@ -4,7 +4,7 @@ Takes URL's on `stdin` and jumbles the paths using a powerset technique and reco
 
 ## Example
 ```
-~/dump > echo "https://jeff.com/api/v1/datasources/iModels/8d73d54f/extraction/run" | go run ~/tools/punfurl/main.go                                                             https://jeff.com/api
+~/> echo "https://jeff.com/api/v1/datasources/iModels/8d73d54f/extraction/run" | go run ~/tools/punfurl/main.go                                                             https://jeff.com/api
 https://jeff.com/v1
 https://jeff.com/api/v1
 https://jeff.com/datasources
