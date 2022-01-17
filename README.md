@@ -1,4 +1,4 @@
-# punfurl
+# `punfurl`
 
 Takes URL's on `stdin` and jumbles the paths using a powerset technique and recombines with the domain on `stdout`.
 
@@ -48,7 +48,7 @@ https://jeff.com/iModels/extraction
 
 To fuzz directories you typically need to initially create a worldist then iterate through each word in that list recursively. This takes time and generates lots of requests on the server when you test for them.
 
-punfurl essentially take the words in the path (e.g. `google-ads/answer/2472708` in the example above) and uses them as the wordlist. However, instead of resursively trying every combination, it only takes the [powerset]("https://en.wikipedia.org/wiki/Power_set") which is a set of all the subsets of a set.
+`punfurl` essentially take the words in the path (e.g. `api/v1/datasources/iModels/8d73d54f/extraction/run` in the example above) and uses them as the wordlist. However instead of resursively trying every combination `punfurl` uses them to generate a [powerset]("https://en.wikipedia.org/wiki/Power_set") which is a set of all the subsets of a set.
 
 For the set {a,b,c}:
 
@@ -62,8 +62,11 @@ P(S) = { {}, {a}, {b}, {c}, {a, b}, {a, c}, {b, c}, {a, b, c} }
 
 Think of it as all the different ways we can select the items (the order of the items doesn't matter), including selecting none, or all.
 
-This implemention *does* record the ordering where it can which is useful for api testing. i.e. We often see `company.xyz/api/v2/doctor/ward` but rarely see `company.xyz/doctor/ward/api/v2` so when we fuzz for `v2` at the end it's a wasted request (or thousand!)
+This implemention *does* record the ordering where it can which is useful for api testing. i.e. We often see `company.xyz/api/v2/doctor/ward` but rarely see `company.xyz/doctor/ward/api/v2` so when we send requests with nonsensical paths it's a wasted request (or thousand!).
 
-The benefit of this approach is mainly time saving & reduced noise on the target server. Also, adding the logical ordering means that the few tests we complete (versus recursive brute-forcing) have a higher success rate than if it were randomised, although this is more notable for longer URL's than shorter one.
+The benefit of this approach is mainly to save time & reduce noise on the target server whilst still keeping some logic to the output. The longer the url the more success you'll have.
+
+> If you want to add custom words, just add another *slash* *word* at the end of the URL on `stdin`.
+> For example: `company.xyz/api/v2/doctor/ward*/custom_word*`
 
 It's not meant to be thorough, it's intended use is for time saving when mass scanning and to be suitable to be pipelined with other open source tooling. On a 6 part path you'd see a 91% reduction of generated URL's using my tool versus bruteforcing with something like FFUF. (64 vs 720)
