@@ -4,7 +4,8 @@ Takes URL's on `stdin` and jumbles the paths using a powerset technique and reco
 
 ## Example
 ```
-~/> echo "https://jeff.com/api/v1/datasources/iModels/8d73d54f/extraction/run" | go run ~/tools/punfurl/main.go                                                             https://jeff.com/api
+~/> echo "https://jeff.com/api/v1/datasources/iModels/8d73d54f/extraction/run" | go run ~/tools/punfurl/main.go
+https://jeff.com/api
 https://jeff.com/v1
 https://jeff.com/api/v1
 https://jeff.com/datasources
@@ -69,4 +70,4 @@ The benefit of this approach is mainly to save time & reduce noise on the target
 > If you want to add custom words, just add another *slash* *word* at the end of the URL on `stdin`.
 > For example: `company.xyz/api/v2/doctor/ward*/custom_word*`
 
-It's not meant to be thorough, it's intended use is for time saving when mass scanning and to be suitable to be pipelined with other open source tooling. On a 6 part path you'd see a 91% reduction of generated URL's using my tool versus bruteforcing with something like FFUF. (64 vs 720)
+It's not meant to be thorough, it's intended use is for time saving when mass scanning and to be suitable to be pipelined with other open source tooling.
