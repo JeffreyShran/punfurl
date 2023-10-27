@@ -47,7 +47,7 @@ https://jeff.com/api/v1/datasources/extraction
 https://jeff.com/iModels/extraction
 ```
 
-To fuzz directories you typically need to initially create a worldist then iterate through each word in that list recursively. This takes time and generates lots of requests on the server when you test for them.
+To fuzz directories you typically need to initially create a wordlist then iterate through each word in that list recursively. This takes time and generates lots of requests on the server when you test for them.
 
 `punfurl` essentially take the words in the path (e.g. `api/v1/datasources/iModels/8d73d54f/extraction/run` in the example above) and uses them as the wordlist. However instead of resursively trying every combination `punfurl` uses them to generate a [powerset]("https://en.wikipedia.org/wiki/Power_set") which is a set of all the subsets of a set.
 
@@ -65,9 +65,9 @@ Think of it as all the different ways we can select the items (the order of the 
 
 This implemention *does* record the ordering where it can which is useful for api testing. i.e. We often see `company.xyz/api/v2/doctor/ward` but rarely see `company.xyz/doctor/ward/api/v2` so when we send requests with nonsensical paths it's a wasted request (or thousand!).
 
-The benefit of this approach is mainly to save time & reduce noise on the target server whilst still keeping some logic to the output. The longer the url the more success you'll have.
+The benefit of this approach is mainly to save time & reduce noise on the target server whilst still keeping some logic to the output. The longer the url the more results you'll have.
 
 > If you want to add custom words, just add another *slash* *word* at the end of the URL on `stdin`.
 > For example: `company.xyz/api/v2/doctor/ward*/custom_word*`
 
-It's not meant to be thorough, it's intended use is for time saving when mass scanning and to be suitable to be pipelined with other open source tooling.
+It's not meant to be thorough, it's intended use is for time saving when mass scanning and to be suitable to be pipelined with other open source tooling such as processing results from tools like GAU and piping into something like httpx.
